@@ -1,0 +1,83 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class Account extends CI_Controller {
+
+	function __construct() {
+		parent::__construct();
+		$this->load->library(array('session', 'recaptcha'));
+		$this->load->model(array('CI_auth', 'CI_encrypt'));
+	}
+
+
+	public function login() {
+
+		if ($this->input->post('email') !== FALSE && $this->input->post('password') !== FALSE && $this->input->post('captcha') !== FALSE) {
+			
+			$captcha = $this->input->post('captcha');
+			$this->recaptcha->recaptcha_check_answer($_SERVER['REMOTE_ADDR'], $captcha['challenge'], $captcha['response']);
+			
+			if ($this->recaptcha->getIsValid()) {
+				
+				$login_array = array($this->input->post('email'), $this->input->post('password'));
+
+				if($this->CI_auth->process_login($login_array)) {
+		      $data = array(
+						"status" => true,
+						"message" => 'Login Successfull'
+						);
+						echo json_encode($data);
+
+					}else {
+						if(isset($_COOKIE['login'])) {
+							if($_COOKIE['login'] < 3) {
+								$attempts = $_COOKIE['login'] + 1;
+								setcookie('login', $attempts, time()+60*10); //set the cookie for 10 minutes with the number of attempts stored
+
+							}else {
+								echo 'Block the IP and send mail';
+
+							}
+						}else {
+							setcookie('login', 1, time()+60*10); //set the cookie for 10 minutes with the initial value of 1
+
+						}
+
+			      $data = array(
+							"status" => false,
+							"message" => 'Invalid email or password'
+							);
+							echo json_encode($data);
+						}
+
+        }else {
+		      $data = array(
+						"status" => false,
+						"message" => 'error in captcha'
+						);
+						echo json_encode($data);                
+        	}
+		} else {
+			$data = array(
+				"status" => false,
+				"message" => 'Missing username or password or captcha'
+				);
+			echo json_encode($data);
+		}
+	}
+
+	public function clients() {
+		if ($this->CI_auth->check_logged()) {
+			$data = array(
+				"status" => true,
+				"data" => $this->db->get('clients')
+			);
+			echo json_encode($data);
+		}else {
+			echo "cant go";
+		}
+	}
+
+}
+
+/* End of file account.php */
+/* Location: ./application/controllers/account.php */

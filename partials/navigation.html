@@ -1,0 +1,58 @@
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#/dashboard">Brightpod Client Management</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li data-ng-class="{ active: active('/dashboard')}">
+                    <a href="#/dashboard">Dashboard</a>
+                </li>
+                <li data-ng-class="{ active: active('/full-client-list')}">
+                    <a href="#/full-client-list">Full Client List</a>
+                </li>
+                <li data-ng-show="user.token">
+                    <a href data-ng-click="logout()">Logout</a>
+                </li>
+                <li data-ng-class="{ active: active('/about')}">
+                    <a href="#/about">About</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    {{logged_user}}
+                </li>
+                <li>
+                    <a href data-ng-click="logout()">Logout</a>
+                </li>                
+            </ul>
+        </div>
+    </div>
+</div>
+
+  <script type="text/ng-template" id="warning-dialog.html">
+    <div class="modal-header">
+     <h3>You're Idle. Do Something!</h3>
+    </div>
+    <div ng-idle-countdown="countdown" ng-init="countdown=5" class="modal-body">
+     <progressbar max="5" value="5" animate="false" class="progress-striped active">You'll be logged out in {{countdown}} second(s).</progressbar>
+    </div>
+
+  </script>
+
+  <script type="text/ng-template" id="timedout-dialog.html">
+    <div class="modal-header">
+     <h3>You've Timed Out!</h3>
+    </div>
+    <div class="modal-body">
+     <p>
+        You were idle too long. You've been logged out!! Kindly log in again.
+     </p>
+   </div>
+  </script>
