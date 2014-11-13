@@ -82,7 +82,7 @@ controllers.controller('about', ['$scope', '$location', '$http', function($scope
 controllers.controller('clientDetails', ['$scope','$routeParams', '$location', '$http', function($scope, $routeParams, $location, $http) {
   var data = {};
   data.client_id = $routeParams.id;
-  $http.post("api/account/clientsDetailsById", data).success(function(data) {
+  $http.post("api/client/clientsDetailsById", data).success(function(data) {
     $scope.client_details = data.data;
     console.log(data.data);
   });
@@ -106,7 +106,7 @@ controllers.controller('clientDetails', ['$scope','$routeParams', '$location', '
 
 controllers.controller('fullClientList', ['$scope', '$location', '$http', function($scope, $location, $http) {
 
-  $http.get("api/account/clients").success(function(data) {
+  $http.get("api/client/clients").success(function(data) {
     $scope.client_details = data.data;
     console.log(data.data);
   });
@@ -131,7 +131,7 @@ controllers.controller('fullClientList', ['$scope', '$location', '$http', functi
 }]);
 
 controllers.controller('dashboard', ['$scope', '$location', '$http', function($scope, $location, $http) {
-    $http.get("api/account/clients").success(function(data) {
+    $http.get("api/client/clients").success(function(data) {
         $scope.clients = data.data;
         $scope.selectedDateAsNumber = new Date();
     });

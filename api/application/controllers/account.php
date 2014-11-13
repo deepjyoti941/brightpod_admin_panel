@@ -70,39 +70,7 @@ class Account extends CI_Controller {
 		}
 	}
 
-	public function clients() {
-		if ($this->CI_auth->check_logged()) {
-			$query = $this->db->get_where('clients', array('active' => 1));
-			$data = array(
-				"status" => true,
-				"data" => $query->result()
-			);
-			echo json_encode($data);
-		}else {
-			$data = array(
-				"status" => false,
-				"message" => 'You must login'
-			);
-			echo json_encode($data);
-		}
-	}
-
-	public function clientsDetailsById() {
-		if ($this->CI_auth->check_logged()) {
-			$query = $this->db->get_where('clients', array('client_id' => $this->input->post('client_id')));
-			$data = array(
-				"status" => true,
-				"data" => $query->row()
-			);
-			echo json_encode($data);
-		}else {
-			$data = array(
-				"status" => false,
-				"message" => 'You must login'
-			);
-			echo json_encode($data);
-		}
-	}		
+	
 
 	public function checkLoggedIn() {
 		echo $this->CI_auth->check_logged();
