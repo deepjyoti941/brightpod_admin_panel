@@ -42,4 +42,28 @@ class Client extends CI_Controller {
 		}
 	}
 
+	public function disableClient() {
+		if ($this->CI_auth->check_logged()) {
+
+		}else {
+			$data = array(
+				"status" => false,
+				"message" => 'You must login'
+			);
+			echo json_encode($data);
+		}
+	}
+
+	public function deleteClient() {
+		if ($this->CI_auth->check_logged()) {
+
+		}else {
+			$data = array(
+				"status" => false,
+				"message" => 'You must login'
+			);
+			echo json_encode($data);
+		}
+	}
+
 }

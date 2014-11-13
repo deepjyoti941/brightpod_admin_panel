@@ -108,26 +108,23 @@ controllers.controller('fullClientList', ['$scope', '$location', '$http', functi
 
   $http.get("api/client/clients").success(function(data) {
     $scope.client_details = data.data;
-    console.log(data.data);
   });
 
   $scope.deleteClient = function(idx) {
-    console.log(idx);
-    var r = confirm("Are You sure You!");
-    if (r == true) {
-      var client_to_delete = $scope.client_details[idx];
-      var post_data = {};
-      post_data.method = 'delete_client_by_id';
-      post_data.service_id = client_to_delete.client_id
-      $http.post('api/account/deleteClient', post_data)
-        .success(function(data) { 
+    bootbox.confirm("Are you sure?", function(result) {
+      if (result) {
+        var client_to_delete = $scope.client_details[idx];
+        var post_data = {};
+        post_data.method = 'delete_client_by_id';
+        post_data.client_id = client_to_delete.client_id
+        $http.post('api/client/deleteClient', post_data)
+          .success(function(data) { 
 
           });
-      $scope.client_details.splice(idx, 1);
-    } else {}
+        $scope.client_details.splice(idx, 1);
+      } else {}
+    }); 
   };
-
-
 }]);
 
 controllers.controller('dashboard', ['$scope', '$location', '$http', function($scope, $location, $http) {
