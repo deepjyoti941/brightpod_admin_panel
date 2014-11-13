@@ -3,7 +3,7 @@
         <h1>Client Details</h1>
     </div>
 </div>
-<div class="row">
+<div class="row" ng-hide="hideClient">
   <div class="col-md-12">
     <div class="panel panel-primary">
       <div class="panel-heading"><strong>{{client_details.first_name}} {{client_details.last_name}}</strong></div>
@@ -23,7 +23,7 @@
 						</div>
 						<div class="col-md-4">
 							<button class="btn btn-warning">Disable</button>
-							<button class="btn btn-danger" ng:click="deleteClient($index)">Remove</button>
+							<button class="btn btn-danger" ng:click="deleteClient(client_details.client_id)">Remove</button>
 						</div>
 					</div>
       </div>
