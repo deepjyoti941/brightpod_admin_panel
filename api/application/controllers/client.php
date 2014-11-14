@@ -57,6 +57,18 @@ class Client extends CI_Controller {
 	public function deleteClient() {
 		if ($this->CI_auth->check_logged()) {
 
+			/*
+			* create backup of all table where client is mapped
+				create directory with client_id name
+				 mkdir('./backups/' . $client_id, 0777, TRUE);
+				 exec('mysqldump --user=... --password=... --host=... DB_NAME --where=<YOUR CLAUSE> > /path/to/output/file.sql');
+			*/
+
+
+			/*
+				delete the roe one by one
+			*/
+
 		}else {
 			$data = array(
 				"status" => false,

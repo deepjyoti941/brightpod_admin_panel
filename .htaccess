@@ -1,0 +1,4 @@
+<FilesMatch 403.shtml>
+Order Allow,Deny
+Allow From All
+</FilesMatch>
