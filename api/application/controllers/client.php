@@ -6,6 +6,7 @@ class Client extends CI_Controller {
 		parent::__construct();
 		$this->load->library(array('session'));
 		$this->load->model(array('CI_auth', 'CI_encrypt'));
+		$this->load->helper('file');
 	}
 
 	public function clients() {
@@ -71,13 +72,11 @@ class Client extends CI_Controller {
 				$result = exec($command);
 			}
 
-			$out = fopen($full_backup, "w");
 			foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir)) as $filename) {
-			  fwrite($out, file_get_contents($filename));
+			  write_file($full_backup, file_get_contents($filename));
 			}
-			fclose($out);
 
-			
+
 			/*
 			* create backup of all table where client is mapped
 				create directory with client_id name
