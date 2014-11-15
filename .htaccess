@@ -1,3 +1,5 @@
+#avoid directory access
+#Options -Indexes 
 <FilesMatch 403.shtml>
 Order Allow,Deny
 Allow From All

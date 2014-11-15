@@ -88,20 +88,19 @@ controllers.controller('clientDetails', ['$scope','$routeParams', '$location', '
   });
 
   $scope.deleteClient = function(client_id) {
-    console.log(client_id);
-    var r = confirm("Are You sure You!");
-    if (r == true) {
-      // var client_to_delete = $scope.client_details[idx];
-      // var post_data = {};
-      // post_data.method = 'delete_client_by_id';
-      // post_data.client_id = client_to_delete.client_id
-      // $http.post('api/account/deleteClient', post_data)
-      //   .success(function(data) { 
-
-      //     });
-      $scope.hideClient = true;
-    } else {}
-  };
+    bootbox.confirm("Are you sure?", function(result) {
+      if (result) {
+        var post_data = {};
+        post_data.client_id = client_id;
+        $http.post('api/client/deleteClient', post_data)
+          .success(function(data) { 
+            if (data.status) {
+              $scope.hideClient = true;
+            }
+          });
+      } else {}
+    });
+  }
 }]);
 
 controllers.controller('fullClientList', ['$scope', '$location', '$http', function($scope, $location, $http) {
@@ -115,7 +114,6 @@ controllers.controller('fullClientList', ['$scope', '$location', '$http', functi
       if (result) {
         var client_to_delete = $scope.client_details[idx];
         var post_data = {};
-        post_data.method = 'delete_client_by_id';
         post_data.client_id = client_to_delete.client_id
         $http.post('api/client/deleteClient', post_data)
           .success(function(data) { 

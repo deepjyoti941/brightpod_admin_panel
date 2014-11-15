@@ -56,7 +56,28 @@ class Client extends CI_Controller {
 
 	public function deleteClient() {
 		if ($this->CI_auth->check_logged()) {
+			// mkdir('./backups/' .$this->input->post('client_id'), 0777, TRUE);
+			mkdir($_SERVER['DOCUMENT_ROOT'].'/backups/' .$this->input->post('client_id'), 0777, TRUE);
+			mkdir($_SERVER['DOCUMENT_ROOT'].'/backups/' .$this->input->post('client_id').'/full_backup', 0777, TRUE);
 
+			$dir = $_SERVER['DOCUMENT_ROOT'].'/backups/' .$this->input->post('client_id').'/';
+			$full_backup = $dir.'full_backup/full_back_up.sql';
+			$tables = array("clients", "attachments", "comments", "companies", "editorial", "events", "focus", "groups", "history", "messages", "milestones", "priority", "projects", "project_emails", "project_user_mapping", "roundup", "tasks", "task_lists", "task_notifications", "times", "transaction", "user_options");
+
+			foreach ($tables as &$table) {
+				$command = "C:\wamp\bin\mysql\mysql5.6.17\bin\mysqldump.exe --no-create-info --host=".$this->db->hostname." --user=".$this->db->username." --password=".$this->db->password." ".$this->db->database." ".$table." --where=client_id=".$this->input->post('client_id')." > ".$dir."$table".".sql";
+				//$command = "mysqldump --no-create-info --host=".$this->db->hostname." --user=".$this->db->username." --password=".$this->db->password." ".$this->db->database." ".$table." --where=client_id=".$this->input->post('client_id')." > ".$dir."$table".".sql";
+				
+				$result = exec($command);
+			}
+
+			$out = fopen($full_backup, "w");
+			foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir)) as $filename) {
+			  fwrite($out, file_get_contents($filename));
+			}
+			fclose($out);
+
+			
 			/*
 			* create backup of all table where client is mapped
 				create directory with client_id name
@@ -66,7 +87,7 @@ class Client extends CI_Controller {
 
 
 			/*
-				delete the roe one by one
+				delete the row one by one
 			*/
 
 		}else {
