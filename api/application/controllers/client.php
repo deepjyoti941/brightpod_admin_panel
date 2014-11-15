@@ -76,18 +76,10 @@ class Client extends CI_Controller {
 			  write_file($full_backup, file_get_contents($filename));
 			}
 
-
-			/*
-			* create backup of all table where client is mapped
-				create directory with client_id name
-				 mkdir('./backups/' . $client_id, 0777, TRUE);
-				 exec('mysqldump --user=... --password=... --host=... DB_NAME --where=<YOUR CLAUSE> > /path/to/output/file.sql');
-			*/
-
-
-			/*
-				delete the row one by one
-			*/
+			foreach ($tables as &$table) {
+				$this->db->where('client_id', $this->input->post('client_id'));
+				$this->db->delete($table); 
+			}
 
 		}else {
 			$data = array(
@@ -96,6 +88,10 @@ class Client extends CI_Controller {
 			);
 			echo json_encode($data);
 		}
+	}
+
+	public function rollBackClient() {
+		
 	}
 
 }
