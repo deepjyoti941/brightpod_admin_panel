@@ -126,19 +126,26 @@ controllers.controller('fullClientList', ['$scope', '$location', '$http', functi
 }]);
 
 controllers.controller('dashboard', ['$scope', '$location', '$http', function($scope, $location, $http) {
-    $http.get("api/client/clients").success(function(data) {
-        $scope.clients = data.data;
-        $scope.selectedDateAsNumber = new Date();
+  $http.get("api/client/clients").success(function(data) {
+      $scope.clients = data.data;
+      $scope.selectedDateAsNumber = new Date();
+  });
+
+  $scope.search = function (searchForm) {
+    var date = new Date();
+    var fromDate = new Date(searchForm.fromDate);
+    var untillDate = new Date(searchForm.untilDate);
+
+    fromDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    untillDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+
+    var post_data = {};
+    post_data.fromDate = fromDate.toJSON().slice(0, 10);
+    post_data.untilDate = untillDate.toJSON().slice(0, 10);
+
+    $http.post('api/client/inactiveClientsByDate', post_data)
+      .success(function(data) { 
+        console.log(data);
     });
-
-    $scope.search = function (searchForm) {
-      var date = new Date();
-      var fromDate = new Date(searchForm.fromDate);
-      fromDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-      console.log(fromDate.toJSON().slice(0, 10));
-
-      var untillDate = new Date(searchForm.untilDate);
-      untillDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-      console.log(untillDate.toJSON().slice(0, 10));      
-    }
+  }
 }]);

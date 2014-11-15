@@ -43,6 +43,19 @@ class Client extends CI_Controller {
 		}
 	}
 
+	public function inactiveClientsByDate() {
+	
+		$query = "SELECT * FROM clients as cl STRAIGHT_JOIN user_client_mapping AS cm WHERE cl.client_id = cm.client_id
+		 					AND cm.last_login BETWEEN ? AND ? AND cl.active = 1";
+		$res = $this->db->query($query, array($this->input->post('fromDate'), $this->input->post('untilDate')));
+		//'2014-11-01', '2014-11-03'
+		$data = array(
+			"status" => true,
+			"data" => $res->result()
+		);
+		echo json_encode($data);
+	}
+
 	public function disableClient() {
 		if ($this->CI_auth->check_logged()) {
 
@@ -91,7 +104,17 @@ class Client extends CI_Controller {
 	}
 
 	public function rollBackClient() {
-		
-	}
+		if ($this->CI_auth->check_logged()) {
 
+
+
+
+		}else {
+					$data = array(
+						"status" => false,
+						"message" => 'You must login'
+					);
+					echo json_encode($data);
+				}	
+			}
 }
