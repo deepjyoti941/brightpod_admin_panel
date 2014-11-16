@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app', ['app.filters', 'app.services', 'app.directives', 'app.controllers', 'ngRoute','ngIdle', 'ui.bootstrap', 'reCAPTCHA', 'mgcrea.ngStrap.datepicker']).
+angular.module('app', ['app.filters', 'app.services', 'app.directives', 'app.controllers', 'ngRoute','ngIdle', 'ui.bootstrap', 'reCAPTCHA', 'mgcrea.ngStrap.datepicker', 'angular-loading-bar']).
 config(['$routeProvider', '$httpProvider', 'reCAPTCHAProvider','$idleProvider', '$keepaliveProvider', function($routeProvider, $httpProvider, reCAPTCHAProvider, $idleProvider, $keepaliveProvider) {
 
     reCAPTCHAProvider.setPublicKey('6Lfjqv0SAAAAAJonUK1DqryGpkrbeOfaUMYlpWhb');

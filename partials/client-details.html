@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-6 col-md-offset-4">
-        <h1>Client Details</h1>
+      <h1>Client Details</h1>
     </div>
 </div>
 <div class="row" ng-hide="hideClient">
@@ -16,9 +16,8 @@
               Trial ends on {{client_details.plan_end_date}} OR 
               <span style="color:rgb(33, 200, 33)" ng-show="client.is_in_trial == 1">Paid</span>
               <span ng-show="client.is_in_trial == 0">In trial</span><br><br>
-              Extend trial by <input type="number" placeholder="number of days"> Days <br>
-              <button class="btn btn-small">Extend</button>
-
+              Extend trial by <input type="number" placeholder="number of days" ng-model="days_client_details.client_id"> Days <br>
+              <button class="btn btn-small" ng-click="extendDays(client_details.client_id, days_client_details.client_id)">Extend</button>
           	</address>
 						</div>
 						<div class="col-md-4">

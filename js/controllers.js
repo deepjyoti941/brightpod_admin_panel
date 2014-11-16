@@ -100,7 +100,53 @@ controllers.controller('clientDetails', ['$scope','$routeParams', '$location', '
           });
       } else {}
     });
-  }
+  };
+
+  $scope.extendDays = function(client_id, days) {
+    bootbox.confirm("Are you sure?", function(result) {
+      if (result) {
+        var post_data = {};
+        post_data.client_id = client_id
+        post_data.days = days;
+        $http.post('api/client/extendTrial', post_data)
+          .success(function(data) {
+            if (data.status == true) {
+              toastr.success(data.message);
+              toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "positionClass": "toast-top-full-width",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+              }
+            } else {
+              toastr.error('Some Error Occured');
+              toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "positionClass": "toast-top-full-width",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+              }               
+            }
+          });
+      } else {}
+    });
+  };
 }]);
 
 controllers.controller('searchByDate', ['$scope','$routeParams', '$location', '$http', 'searchService', function($scope, $routeParams, $location, $http, searchService) {
@@ -118,6 +164,52 @@ controllers.controller('searchByDate', ['$scope','$routeParams', '$location', '$
         $scope.client_details.splice(idx, 1);
       } else {}
     }); 
+  };
+
+  $scope.extendDays = function(client_id, days) {
+    bootbox.confirm("Are you sure?", function(result) {
+      if (result) {
+        var post_data = {};
+        post_data.client_id = client_id
+        post_data.days = days;
+        $http.post('api/client/extendTrial', post_data)
+          .success(function(data) {
+            if (data.status == true) {
+              toastr.success(data.message);
+              toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "positionClass": "toast-top-full-width",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+              }
+            } else {
+              toastr.error('Some Error Occured');
+              toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "positionClass": "toast-top-full-width",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+              }               
+            }
+          });
+      } else {}
+    });
   };
 }]);
 
@@ -140,6 +232,52 @@ controllers.controller('fullClientList', ['$scope', '$location', '$http', functi
         $scope.client_details.splice(idx, 1);
       } else {}
     }); 
+  };
+
+  $scope.extendDays = function(client_id, days) {
+    bootbox.confirm("Are you sure?", function(result) {
+      if (result) {
+        var post_data = {};
+        post_data.client_id = client_id
+        post_data.days = days;
+        $http.post('api/client/extendTrial', post_data)
+          .success(function(data) {
+            if (data.status == true) {
+              toastr.success(data.message);
+              toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "positionClass": "toast-top-full-width",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+              }
+            } else {
+              toastr.error('Some Error Occured');
+              toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "positionClass": "toast-top-full-width",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+              }               
+            }
+          });
+      } else {}
+    });
   };
 }]);
 

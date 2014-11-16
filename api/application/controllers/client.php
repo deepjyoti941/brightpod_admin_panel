@@ -106,15 +106,32 @@ class Client extends CI_Controller {
 	public function rollBackClient() {
 		if ($this->CI_auth->check_logged()) {
 
-
-
-
 		}else {
-					$data = array(
-						"status" => false,
-						"message" => 'You must login'
-					);
-					echo json_encode($data);
-				}	
+			$data = array(
+				"status" => false,
+				"message" => 'You must login'
+			);
+			echo json_encode($data);
+		}	
+	}
+
+	public function extendTrial() {
+		if ($this->CI_auth->check_logged()) {
+			$query = "UPDATE clients SET plan_end_date = DATE_ADD(plan_end_date, INTERVAL ? DAY) WHERE client_id = ?";
+			$res = $this->db->query($query, array($this->input->post('days'), $this->input->post('client_id')));
+			if ($res == 1) {
+				$data = array(
+					"status" => true,
+					"message" => 'Trial Period Extended Successfully'
+				);
+				echo json_encode($data);
 			}
+		}else {
+			$data = array(
+				"status" => false,
+				"message" => 'You must login'
+			);
+			echo json_encode($data);
+		}	
+	}
 }

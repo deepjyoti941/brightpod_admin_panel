@@ -16,14 +16,14 @@
               Trial ends on {{client.plan_end_date}} OR 
               <span style="color:rgb(33, 200, 33)" ng-show="client.is_in_trial == 1">Paid</span>
               <span ng-show="client.is_in_trial == 0">In trial</span><br><br>
-              Extend trial by <input type="number" placeholder="number of days"> Days <br>
-              <button class="btn btn-small">Extend</button>
+              Extend trial by <input type="number" placeholder="number of days" ng-model="days_client.client_id"> Days <br>
+              <button class="btn btn-small" ng-click="extendDays(client.client_id, days_client.client_id)">Extend</button>
 
           	</address>
 						</div>
 						<div class="col-md-4">
 							<button class="btn btn-warning">Disable</button>
-							<button class="btn btn-danger" ng:click="deleteClient($index)">Remove</button>
+							<button class="btn btn-danger" ng-click="deleteClient($index)">Remove</button>
 						</div>
 					</div>
       </div>
