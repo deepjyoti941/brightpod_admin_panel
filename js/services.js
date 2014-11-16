@@ -2,7 +2,7 @@
 
 angular.module('app.services', [])
 		.factory("loginService", ["$http", "$location", "sessionService",function ($http, $location, sessionService) {
-	  return{
+	  return {
 	    login:function(data,scope){
 	      var $promise = $http.post('api/account/login',data); //send data to user.php
 	      $promise.then(function(msg){
@@ -56,14 +56,14 @@ angular.module('app.services', [])
 	    islogged:function(){
 	      var $checkSessionServer = $http.post('api/account/checkLoggedIn');
 	      return $checkSessionServer;
-	      /*
+	      
 	      if(sessionService.get('user')) return true;
 	      else return false;
-	      */
+	      
 	    }
 	  }
 	}]).factory("sessionService", ["$http",function ($http) {
-	  return{
+	  return {
 	    set:function(key,value){
 	      return sessionStorage.setItem(key,value);
 	    },
@@ -75,4 +75,26 @@ angular.module('app.services', [])
 	      return sessionStorage.removeItem(key);
 	    }
 	  };
-	}]);
+	}]).factory("searchService",[function() {
+		var searchResults = {}
+		return {
+			set:function(data) {
+				searchResults = data;
+			},
+			get:function() {
+				return searchResults;	
+			}
+		}
+	}]).factory("deleteClients",["$http",function($http) {
+    return {
+      deleteClient:function() {
+
+      }
+    }
+  }]).factory("clientService",["$http",function($http) {
+    return {
+      getClients:function() {
+
+      }
+    }
+  }]);

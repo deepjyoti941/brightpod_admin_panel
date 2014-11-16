@@ -103,6 +103,24 @@ controllers.controller('clientDetails', ['$scope','$routeParams', '$location', '
   }
 }]);
 
+controllers.controller('searchByDate', ['$scope','$routeParams', '$location', '$http', 'searchService', function($scope, $routeParams, $location, $http, searchService) {
+  $scope.client_details = searchService.get();
+  $scope.deleteClient = function(idx) {
+    bootbox.confirm("Are you sure?", function(result) {
+      if (result) {
+        var client_to_delete = $scope.client_details[idx];
+        var post_data = {};
+        post_data.client_id = client_to_delete.client_id
+        $http.post('api/client/deleteClient', post_data)
+          .success(function(data) { 
+
+          });
+        $scope.client_details.splice(idx, 1);
+      } else {}
+    }); 
+  };
+}]);
+
 controllers.controller('fullClientList', ['$scope', '$location', '$http', function($scope, $location, $http) {
 
   $http.get("api/client/clients").success(function(data) {
@@ -125,7 +143,7 @@ controllers.controller('fullClientList', ['$scope', '$location', '$http', functi
   };
 }]);
 
-controllers.controller('dashboard', ['$scope', '$location', '$http', function($scope, $location, $http) {
+controllers.controller('dashboard', ['$scope', '$location', '$http', 'searchService', function($scope, $location, $http, searchService) {
   $http.get("api/client/clients").success(function(data) {
       $scope.clients = data.data;
       $scope.selectedDateAsNumber = new Date();
@@ -144,8 +162,9 @@ controllers.controller('dashboard', ['$scope', '$location', '$http', function($s
     post_data.untilDate = untillDate.toJSON().slice(0, 10);
 
     $http.post('api/client/inactiveClientsByDate', post_data)
-      .success(function(data) { 
-        console.log(data);
+      .success(function(data) {
+        searchService.set(data.data); 
+        $location.path('/search-by-date');
     });
   }
 }]);

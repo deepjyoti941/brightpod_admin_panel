@@ -24,6 +24,9 @@ config(['$routeProvider', '$httpProvider', 'reCAPTCHAProvider','$idleProvider', 
     }).when('/full-client-list', {
         controller: 'fullClientList',
         templateUrl: 'partials/full-client-list.html'
+    }).when('/search-by-date', {
+        controller: 'searchByDate',
+        templateUrl: 'partials/full-client-list.html'
     }).when('/clients/:id', {
         controller: 'clientDetails',
         templateUrl: 'partials/client-details.html'
