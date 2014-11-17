@@ -25,7 +25,12 @@ class CI_auth extends CI_Model {
 			$user_pass = $row->password;
 			$user_salt = $row->salt;
 			if($this->CI_encrypt->encryptUserPwd( $password,$user_salt) === $user_pass) {
-				$this->session->set_userdata('logged_user', $user_id);
+				$data = array(
+		       	'email'     => $email,
+		      	'logged_user'=> $user_id,
+		       	'logged_in' => TRUE
+	        );
+				$this->session->set_userdata($data);
 				return true;
 			}
 			return false;

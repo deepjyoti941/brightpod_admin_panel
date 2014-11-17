@@ -79,19 +79,30 @@ controllers.controller('about', ['$scope', '$location', '$http', function($scope
 
 }]);
 
-controllers.controller('clientDetails', ['$scope','$routeParams', '$location', '$http', function($scope, $routeParams, $location, $http) {
+controllers.controller('clientDetails', ['$scope','$routeParams', '$location', '$http', 'clientService', function($scope, $routeParams, $location, $http, clientService) {
   var data = {};
   data.client_id = $routeParams.id;
   $http.post("api/client/clientsDetailsById", data).success(function(data) {
     $scope.client_details = data.data;
-    console.log(data.data);
   });
 
-  $scope.deleteClient = function(client_id) {
+  $scope.disableClient = function(client_id) {
+    bootbox.confirm("Are you sure?", function(result) {
+      if (result) {
+        var data = {};
+        data.client_id = client_id;
+        clientService.disableClient(data);
+      } else {}
+    });
+  }
+
+  $scope.deleteClient = function(client_id, first_name, last_name) {
     bootbox.confirm("Are you sure?", function(result) {
       if (result) {
         var post_data = {};
         post_data.client_id = client_id;
+        post_data.client_firstname = first_name;
+        post_data.client_lastname = last_name;
         $http.post('api/client/deleteClient', post_data)
           .success(function(data) { 
             if (data.status) {
@@ -156,7 +167,9 @@ controllers.controller('searchByDate', ['$scope','$routeParams', '$location', '$
       if (result) {
         var client_to_delete = $scope.client_details[idx];
         var post_data = {};
-        post_data.client_id = client_to_delete.client_id
+        post_data.client_id = client_to_delete.client_id;
+        post_data.client_firstname = client_to_delete.first_name;
+        post_data.client_lastname = client_to_delete.last_name;
         $http.post('api/client/deleteClient', post_data)
           .success(function(data) { 
 
@@ -213,11 +226,21 @@ controllers.controller('searchByDate', ['$scope','$routeParams', '$location', '$
   };
 }]);
 
-controllers.controller('fullClientList', ['$scope', '$location', '$http', function($scope, $location, $http) {
+controllers.controller('fullClientList', ['$scope', '$location', '$http', 'clientService', function($scope, $location, $http, clientService) {
 
   $http.get("api/client/clients").success(function(data) {
     $scope.client_details = data.data;
   });
+
+  $scope.disableClient = function(client_id) {
+    bootbox.confirm("Are you sure?", function(result) {
+      if (result) {
+        var data = {};
+        data.client_id = client_id;
+        clientService.disableClient(data);
+      } else {}
+    });
+  }
 
   $scope.deleteClient = function(idx) {
     bootbox.confirm("Are you sure?", function(result) {
@@ -225,6 +248,8 @@ controllers.controller('fullClientList', ['$scope', '$location', '$http', functi
         var client_to_delete = $scope.client_details[idx];
         var post_data = {};
         post_data.client_id = client_to_delete.client_id
+        post_data.client_firstname = client_to_delete.first_name;
+        post_data.client_lastname = client_to_delete.last_name;
         $http.post('api/client/deleteClient', post_data)
           .success(function(data) { 
 

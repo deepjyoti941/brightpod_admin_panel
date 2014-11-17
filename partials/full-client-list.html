@@ -22,7 +22,7 @@
           	</address>
 						</div>
 						<div class="col-md-4">
-							<button class="btn btn-warning">Disable</button>
+							<button class="btn btn-warning" ng-hide="client.active == 0" ng-click="disableClient(client.client_id)">Disable</button>
 							<button class="btn btn-danger" ng-click="deleteClient($index)">Remove</button>
 						</div>
 					</div>

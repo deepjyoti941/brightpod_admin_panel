@@ -95,6 +95,28 @@ angular.module('app.services', [])
     return {
       getClients:function() {
 
+      },
+      disableClient:function(data) {
+        var $promise = $http.post('api/client/disableClient',data); //send data to user.php
+        $promise.then(function(msg) {
+          if(msg.data.status){
+              toastr.success(msg.data.message);
+              toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "positionClass": "toast-top-full-width",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+              }
+            }        
+          });
+        }
       }
-    }
   }]);

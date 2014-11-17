@@ -21,8 +21,8 @@
           	</address>
 						</div>
 						<div class="col-md-4">
-							<button class="btn btn-warning">Disable</button>
-							<button class="btn btn-danger" ng:click="deleteClient(client_details.client_id)">Remove</button>
+							<button class="btn btn-warning" ng-hide="client_details.active == 0" ng-click="disableClient(client_details.client_id)">Disable</button>
+							<button class="btn btn-danger" ng:click="deleteClient(client_details.client_id, client_details.first_name, client_details.last_name)">Remove</button>
 						</div>
 					</div>
       </div>

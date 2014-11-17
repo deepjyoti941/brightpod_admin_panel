@@ -5,7 +5,7 @@ class Account extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->library(array('session', 'recaptcha'));
-		$this->load->model(array('CI_auth', 'CI_encrypt'));
+		$this->load->model(array('CI_auth', 'CI_encrypt', 'Logs'));
 	}
 
 	public function index() {
@@ -25,6 +25,9 @@ class Account extends CI_Controller {
 				$login_array = array($this->input->post('email'), $this->input->post('password'));
 
 				if($this->CI_auth->process_login($login_array)) {
+	
+					$login_log_array = array($_SERVER['REMOTE_ADDR'], $this->session->userdata('email'), 'LOGIN');
+					$this->Logs->createLoginLog($login_log_array);
 		      $data = array(
 						"status" => true,
 						"message" => 'Login Successfull! Welcome',
