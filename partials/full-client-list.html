@@ -3,15 +3,20 @@
         <h1>Brightpod Customer(s)</h1>
     </div>
 </div>
+<div class="row">
+  <div class="col-md-6 col-md-offset-4" ng-show="!client_details.length">
+    <h3> " No Results Found "</h3>
+  </div>
+</div>
 <div class="row" ng-repeat="client in client_details">
   <div class="col-md-12">
     <div class="panel panel-primary">
-      <div class="panel-heading" ng-class="{true:'panel-heading-custom', false:''}[client.active == 0]"><strong>{{client.first_name}} {{client.last_name}}</strong></div>
+      <div class="panel-heading" ng-class="{true:'panel-heading-custom', false:''}[client.active == 0]"><strong>{{client.first_name}} {{client.last_name}} - {{client.client_email}}</strong></div>
       <div class="panel-body">  
           <div class="row">
             <div class="col-md-8">
               <address>
-                <strong>Signed up on {{client.date_registration}}</strong><br>
+                <strong>Signed up on {{client.registration_date}}</strong><br>
                 Account owner is {{client.first_name}} {{client.last_name}}<br>
                 <span>Trial ends on {{client.plan_end_date}} OR</span> 
                 <span style="color:rgb(33, 200, 33)" ng-show="client.plan_id == 1">Paid - Professional</span>
@@ -27,8 +32,8 @@
             </address>
             </div>
             <div class="col-md-4">
-              <button class="btn btn-warning" ng-show="client.active == 1" ng-click="disableClient(client.client_id)">Disable</button>
-              <button class="btn btn-success" ng-show="client.active == 0" ng-click="enableClient(client.client_id)">Enable</button>
+              <button class="btn btn-small" ng-show="client.active == 1" ng-click="disableClient(client.client_id, client.first_name, client.last_name)">Disable</button>
+              <button class="btn btn-success" ng-show="client.active == 0" ng-click="enableClient(client.client_id, client.first_name, client.last_name)">Enable</button>
               <button class="btn btn-danger" ng-click="deleteClient($index)">Remove</button>
             </div>
           </div>

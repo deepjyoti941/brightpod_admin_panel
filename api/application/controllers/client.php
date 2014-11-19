@@ -28,10 +28,11 @@ class Client extends CI_Controller {
 
   public function clientsDetailsById() {
     if ($this->CI_auth->check_logged()) {
-      $query = $this->db->get_where('clients', array('client_id' => $this->input->post('client_id')));
+      $query = "SELECT client_id, first_name, last_name, client_email, DATE_FORMAT(date_registration,'%b %d %Y') AS registration_date, plan_end_date, plan_id, active  FROM clients WHERE client_id = ?";
+      $res = $this->db->query($query, array('client_id' => $this->input->post('client_id')));
       $data = array(
         "status" => true,
-        "data" => $query->row()
+        "data" => $res->row()
       );
       echo json_encode($data);
     }else {
@@ -45,7 +46,7 @@ class Client extends CI_Controller {
 
   public function inactiveClientsByDate() {
   
-    $query = "SELECT * FROM clients as cl STRAIGHT_JOIN user_client_mapping AS cm WHERE cl.client_id = cm.client_id
+    $query = "SELECT cl.client_id, cl.first_name, cl.last_name, cl.client_email, DATE_FORMAT(cl.date_registration,'%b %d %Y') AS registration_date, cl.plan_end_date, cl.plan_id, cl.active  FROM clients as cl STRAIGHT_JOIN user_client_mapping AS cm WHERE cl.client_id = cm.client_id
               AND cm.last_login BETWEEN ? AND ? AND cl.active = 0";
     $res = $this->db->query($query, array($this->input->post('fromDate'), $this->input->post('untilDate')));
     //'2014-11-01', '2014-11-03'
@@ -61,6 +62,8 @@ class Client extends CI_Controller {
       $query = "UPDATE clients SET active = 0 WHERE client_id = ?";
       $res = $this->db->query($query, array($this->input->post('client_id')));
       if ($res == 1) {
+        $db_log_array = array($_SERVER['REMOTE_ADDR'], $this->session->userdata('email'), 'DISABLED CLIENT', $this->input->post('client_firstname').' '.$this->input->post('client_lastname'));
+        $this->Logs->createDbLog($db_log_array);
         $data = array(
           "status" => true,
           "message" => 'Client Disabled Successfully'
@@ -89,6 +92,8 @@ class Client extends CI_Controller {
       $query = "UPDATE clients SET active = 1 WHERE client_id = ?";
       $res = $this->db->query($query, array($this->input->post('client_id')));
       if ($res == 1) {
+        $db_log_array = array($_SERVER['REMOTE_ADDR'], $this->session->userdata('email'), 'ENABLED CLIENT', $this->input->post('client_firstname').' '.$this->input->post('client_lastname'));
+        $this->Logs->createDbLog($db_log_array);
         $data = array(
           "status" => true,
           "message" => 'Client Enabled Successfully'

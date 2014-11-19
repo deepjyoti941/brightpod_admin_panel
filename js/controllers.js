@@ -86,19 +86,23 @@ controllers.controller('clientDetails', ['$scope','$routeParams', '$location', '
     $scope.client_details = data.data;
   });
 
-  $scope.disableClient = function(client_id) {
+  $scope.disableClient = function(client_id, first_name, last_name) {
     this.client_details.active = 0;
     var data = {};
     data.client_id = client_id;
+    data.client_firstname = first_name;
+    data.client_lastname = last_name;
     clientService.disableClient(data).then(function(response){
       console.log(response.data);
     });
   }
 
-  $scope.enableClient = function(client_id) {
+  $scope.enableClient = function(client_id, first_name, last_name) {
     this.client_details.active = 1;
     var data = {};
     data.client_id = client_id;
+    data.client_firstname = first_name;
+    data.client_lastname = last_name;
     clientService.enableClient(data).then(function(response){
       console.log(response.data);
     });
@@ -169,8 +173,33 @@ controllers.controller('clientDetails', ['$scope','$routeParams', '$location', '
   };
 }]);
 
-controllers.controller('searchByDate', ['$scope','$routeParams', '$location', '$http', 'searchService', function($scope, $routeParams, $location, $http, searchService) {
+controllers.controller('searchByDate', ['$scope','$routeParams', '$location', '$http', 'searchService','clientService', function($scope, $routeParams, $location, $http, searchService, clientService) {
   $scope.client_details = searchService.get();
+
+  $scope.disableClient = function(client_id, first_name, last_name) {
+    this.client.active = 0;
+    var data = {};
+    data.client_id = client_id;
+    data.client_firstname = first_name;
+    data.client_lastname = last_name;
+    clientService.disableClient(data).then(function(response){
+      if (response.data) {
+        $scope.client_details.active == 0;
+      };
+    });
+  }
+
+  $scope.enableClient = function(client_id, first_name, last_name) {
+    this.client.active = 1;
+    var data = {};
+    data.client_id = client_id;
+    data.client_firstname = first_name;
+    data.client_lastname = last_name;
+    clientService.enableClient(data).then(function(response){
+      console.log(response.data);
+    });
+  }
+
   $scope.deleteClient = function(idx) {
     bootbox.confirm("Are you sure?", function(result) {
       if (result) {

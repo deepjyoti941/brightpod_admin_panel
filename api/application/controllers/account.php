@@ -39,15 +39,13 @@ class Account extends CI_Controller {
             if(isset($_COOKIE['login'])) {
               if($_COOKIE['login'] < 1) {
                 $attempts = $_COOKIE['login'] + 1;
-                setcookie('login', $attempts, time()+60*10); //set the cookie for 10 minutes with the number of attempts stored
-
+                setcookie('login', $attempts);
               }else {
                 $this->blockIp();
                 exit;
               }
             }else {
-              setcookie('login', 1, time()+60*30); //set the cookie for 10 minutes with the initial value of 1
-
+              setcookie('login', 1);
             }
 
             $data = array(
@@ -80,6 +78,9 @@ class Account extends CI_Controller {
   }
 
   public function logout() {
+
+    $login_log_array = array($_SERVER['REMOTE_ADDR'], $this->session->userdata('email'), 'LOGOUT');
+    $this->Logs->createLoginLog($login_log_array);
     $user_data = $this->session->all_userdata();
     foreach ($user_data as $key => $value) {
         if ($key != 'session_id' && $key != 'ip_address' && $key != 'user_agent' && $key != 'last_activity') {

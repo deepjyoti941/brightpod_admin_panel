@@ -6,12 +6,12 @@
 <div class="row" ng-hide="hideClient">
   <div class="col-md-12">
     <div class="panel panel-primary">
-      <div class="panel-heading" ng-class="{true:'panel-heading-custom', false:''}[client_details.active == 0]"><strong>{{client_details.first_name}} {{client_details.last_name}}</strong></div>
+      <div class="panel-heading" ng-class="{true:'panel-heading-custom', false:''}[client_details.active == 0]"><strong>{{client_details.first_name}} {{client_details.last_name}} - {{client_details.client_email}}</strong></div>
       <div class="panel-body">
           <div class="row">
             <div class="col-md-8">
               <address>
-                <strong>Signed up on {{client_details.date_registration}}</strong><br>
+                <strong>Signed up on {{client_details.registration_date}}</strong><br>
                 Account owner is {{client_details.first_name}} {{client_details.last_name}}<br>
                 Trial ends on {{client_details.plan_end_date}} OR 
                 <span style="color:rgb(33, 200, 33)" ng-show="client_details.plan_id == 1">Paid - Professional</span>
@@ -27,8 +27,8 @@
             </address>
             </div>
             <div class="col-md-4">
-              <button class="btn btn-warning" ng-hide="client_details.active == 0" ng-click="disableClient(client_details.client_id)">Disable</button>
-              <button class="btn btn-success" ng-show="client_details.active == 0" ng-click="enableClient(client_details.client_id)">Enable</button>
+              <button class="btn btn-warning" ng-hide="client_details.active == 0" ng-click="disableClient(client_details.client_id, client_details.first_name, client_details.last_name)">Disable</button>
+              <button class="btn btn-success" ng-show="client_details.active == 0" ng-click="enableClient(client_details.client_id, client_details.first_name, client_details.last_name)">Enable</button>
               <button class="btn btn-danger" ng:click="deleteClient(client_details.client_id, client_details.first_name, client_details.last_name)">Remove</button>
             </div>
           </div>
