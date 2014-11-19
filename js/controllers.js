@@ -236,9 +236,11 @@ controllers.controller('searchByDate', ['$scope','$routeParams', '$location', '$
 }]);
 
 controllers.controller('fullClientList', ['$scope', '$location', '$http', 'clientService', function($scope, $location, $http, clientService) {
-$scope.visible = true;
-  $http.get("api/client/clients").success(function(data) {
-    $scope.client_details = data.data;
+  
+  $scope.visible = true;
+  var promise = clientService.getClients();
+  promise.then(function(payload) {
+    $scope.client_details = payload.data.data;
   });
 
   $scope.disableClient = function(client_id) {
@@ -325,10 +327,12 @@ $scope.visible = true;
   };
 }]);
 
-controllers.controller('dashboard', ['$scope', '$location', '$http', 'searchService', function($scope, $location, $http, searchService) {
-  $http.get("api/client/clients").success(function(data) {
-      $scope.clients = data.data;
-      $scope.selectedDateAsNumber = new Date();
+controllers.controller('dashboard', ['$scope', '$location', '$http', 'searchService', 'clientService', function($scope, $location, $http, searchService, clientService) {
+  
+  var promise = clientService.getClients();
+  promise.then(function(payload) {
+    $scope.clients = payload.data.data;
+    $scope.selectedDateAsNumber = new Date();
   });
 
   $scope.search = function (searchForm) {

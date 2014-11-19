@@ -94,7 +94,7 @@ angular.module('app.services', [])
   }]).factory("clientService",["$http",function($http) {
     return {
       getClients:function() {
-
+        return $http.get("api/client/clients");
       },
       disableClient:function(data) {
         var promise = $http.post('api/client/disableClient',data); //send data to user.php
