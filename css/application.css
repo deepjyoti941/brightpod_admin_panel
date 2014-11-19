@@ -5,3 +5,9 @@ body {
 .dropdown-menu {
 	width: 452px;
 }
+
+.panel-primary > .panel-heading-custom {
+	color: #fff;
+	background-color: #CF7E7E;
+	border-color: #d39a9a;
+}

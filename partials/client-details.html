@@ -6,26 +6,33 @@
 <div class="row" ng-hide="hideClient">
   <div class="col-md-12">
     <div class="panel panel-primary">
-      <div class="panel-heading"><strong>{{client_details.first_name}} {{client_details.last_name}}</strong></div>
+      <div class="panel-heading" ng-class="{true:'panel-heading-custom', false:''}[client_details.active == 0]"><strong>{{client_details.first_name}} {{client_details.last_name}}</strong></div>
       <div class="panel-body">
-					<div class="row">
-						<div class="col-md-8">
-							<address>
-              <strong>Signed up on {{client_details.date_registration}}</strong><br>
-              Account owner is {{client_details.first_name}} {{client_details.last_name}}<br>
-              Trial ends on {{client_details.plan_end_date}} OR 
-              <span style="color:rgb(33, 200, 33)" ng-show="client.is_in_trial == 1">Paid</span>
-              <span ng-show="client.is_in_trial == 0">In trial</span><br><br>
-              Extend trial by <input type="number" placeholder="number of days" ng-model="days_client_details.client_id"> Days <br>
-              <button class="btn btn-small" ng-click="extendDays(client_details.client_id, days_client_details.client_id)">Extend</button>
-          	</address>
-						</div>
-						<div class="col-md-4">
-							<button class="btn btn-warning" ng-hide="client_details.active == 0" ng-click="disableClient(client_details.client_id)">Disable</button>
-							<button class="btn btn-danger" ng:click="deleteClient(client_details.client_id, client_details.first_name, client_details.last_name)">Remove</button>
-						</div>
-					</div>
+          <div class="row">
+            <div class="col-md-8">
+              <address>
+                <strong>Signed up on {{client_details.date_registration}}</strong><br>
+                Account owner is {{client_details.first_name}} {{client_details.last_name}}<br>
+                Trial ends on {{client_details.plan_end_date}} OR 
+                <span style="color:rgb(33, 200, 33)" ng-show="client_details.plan_id == 1">Paid - Professional</span>
+                <span style="color:rgb(33, 200, 33)" ng-show="client_details.plan_id == 2">Paid - Studio</span>
+                <span style="color:rgb(33, 200, 33)" ng-show="client_details.plan_id == 3">Paid - Agency</span>
+                <span style="color:rgb(33, 200, 33)" ng-show="client_details.plan_id == 4">Paid - Agency Plus</span>
+                <span style="color:rgb(33, 200, 33)" ng-show="client_details.plan_id == 5">Paid - Intro</span>
+                <span ng-show="client_details.plan_id == 6">In trial</span><br><br>
+                <div ng-hide="client_details.active == 0">
+                 Extend trial by <input type="number" placeholder="number of days" ng-model="days_client_details.client_id"> Days <br>
+                  <button class="btn btn-small" ng-click="extendDays(client_details.client_id, days_client_details.client_id)">Extend</button>                
+                </div>
+            </address>
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-warning" ng-hide="client_details.active == 0" ng-click="disableClient(client_details.client_id)">Disable</button>
+              <button class="btn btn-success" ng-show="client_details.active == 0" ng-click="enableClient(client_details.client_id)">Enable</button>
+              <button class="btn btn-danger" ng:click="deleteClient(client_details.client_id, client_details.first_name, client_details.last_name)">Remove</button>
+            </div>
+          </div>
       </div>
     </div>
-	</div>
+  </div>
 </div>

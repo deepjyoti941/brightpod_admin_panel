@@ -97,10 +97,10 @@ angular.module('app.services', [])
 
       },
       disableClient:function(data) {
-        var $promise = $http.post('api/client/disableClient',data); //send data to user.php
-        $promise.then(function(msg) {
-          if(msg.data.status){
-              toastr.success(msg.data.message);
+        var promise = $http.post('api/client/disableClient',data); //send data to user.php
+        promise.success(function(data) {
+          if(data.status){
+              toastr.success(data.message);
               toastr.options = {
                 "closeButton": false,
                 "debug": false,
@@ -115,8 +115,34 @@ angular.module('app.services', [])
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
               }
-            }        
+            }
+          return data;
           });
+          return promise;
+        },
+      enableClient:function(data) {
+        var promise = $http.post('api/client/enableClient',data); //send data to user.php
+        promise.success(function(data) {
+          if(data.status){
+              toastr.success(data.message);
+              toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "positionClass": "toast-top-full-width",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+              }
+            }
+          return data;       
+          });
+          return promise;
         }
       }
   }]);

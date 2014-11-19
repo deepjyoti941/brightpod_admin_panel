@@ -87,14 +87,23 @@ controllers.controller('clientDetails', ['$scope','$routeParams', '$location', '
   });
 
   $scope.disableClient = function(client_id) {
-    bootbox.confirm("Are you sure?", function(result) {
-      if (result) {
-        var data = {};
-        data.client_id = client_id;
-        clientService.disableClient(data);
-      } else {}
+    this.client_details.active = 0;
+    var data = {};
+    data.client_id = client_id;
+    clientService.disableClient(data).then(function(response){
+      console.log(response.data);
     });
   }
+
+  $scope.enableClient = function(client_id) {
+    this.client_details.active = 1;
+    var data = {};
+    data.client_id = client_id;
+    clientService.enableClient(data).then(function(response){
+      console.log(response.data);
+    });
+  }
+
 
   $scope.deleteClient = function(client_id, first_name, last_name) {
     bootbox.confirm("Are you sure?", function(result) {
@@ -227,18 +236,28 @@ controllers.controller('searchByDate', ['$scope','$routeParams', '$location', '$
 }]);
 
 controllers.controller('fullClientList', ['$scope', '$location', '$http', 'clientService', function($scope, $location, $http, clientService) {
-
+$scope.visible = true;
   $http.get("api/client/clients").success(function(data) {
     $scope.client_details = data.data;
   });
 
   $scope.disableClient = function(client_id) {
-    bootbox.confirm("Are you sure?", function(result) {
-      if (result) {
-        var data = {};
-        data.client_id = client_id;
-        clientService.disableClient(data);
-      } else {}
+    this.client.active = 0;
+    var data = {};
+    data.client_id = client_id;
+    clientService.disableClient(data).then(function(response){
+      if (response.data) {
+        $scope.client_details.active == 0;
+      };
+    });
+  }
+
+  $scope.enableClient = function(client_id) {
+    this.client.active = 1;
+    var data = {};
+    data.client_id = client_id;
+    clientService.enableClient(data).then(function(response){
+      console.log(response.data);
     });
   }
 
