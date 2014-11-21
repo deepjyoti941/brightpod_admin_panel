@@ -5,13 +5,13 @@ class Client extends CI_Controller {
   function __construct() {
     parent::__construct();
     $this->load->library(array('session'));
-    $this->load->model(array('CI_auth', 'CI_encrypt', 'Logs'));
+    $this->load->model(array('CI_auth', 'CI_encrypt', 'Logs', 'Clients'));
     $this->load->helper('file');
   }
 
   public function clients() {
     if ($this->CI_auth->check_logged()) {
-      $query = $this->db->get('clients');
+      $query = $this->Clients->getClients();
       $data = array(
         "status" => true,
         "data" => $query->result()
@@ -28,8 +28,7 @@ class Client extends CI_Controller {
 
   public function clientsDetailsById() {
     if ($this->CI_auth->check_logged()) {
-      $query = "SELECT client_id, first_name, last_name, client_email, DATE_FORMAT(date_registration,'%b %d %Y') AS registration_date, plan_end_date, plan_id, active  FROM clients WHERE client_id = ?";
-      $res = $this->db->query($query, array('client_id' => $this->input->post('client_id')));
+      $res = $this->Clients->clientById($this->input->post('client_id'));
       $data = array(
         "status" => true,
         "data" => $res->row()
@@ -45,11 +44,7 @@ class Client extends CI_Controller {
   }
 
   public function inactiveClientsByDate() {
-  
-    $query = "SELECT cl.client_id, cl.first_name, cl.last_name, cl.client_email, DATE_FORMAT(cl.date_registration,'%b %d %Y') AS registration_date, cl.plan_end_date, cl.plan_id, cl.active  FROM clients as cl STRAIGHT_JOIN user_client_mapping AS cm WHERE cl.client_id = cm.client_id
-              AND cm.last_login BETWEEN ? AND ? AND cl.active = 0";
-    $res = $this->db->query($query, array($this->input->post('fromDate'), $this->input->post('untilDate')));
-    //'2014-11-01', '2014-11-03'
+    $res = $this->Clients->inactiveClients($this->input->post('fromDate'), $this->input->post('untilDate'));
     $data = array(
       "status" => true,
       "data" => $res->result()
@@ -59,8 +54,7 @@ class Client extends CI_Controller {
 
   public function disableClient() {
     if ($this->CI_auth->check_logged()) {
-      $query = "UPDATE clients SET active = 0 WHERE client_id = ?";
-      $res = $this->db->query($query, array($this->input->post('client_id')));
+      $res = $this->Clients->disableClient($this->input->post('client_id'));
       if ($res == 1) {
         $db_log_array = array($_SERVER['REMOTE_ADDR'], $this->session->userdata('email'), 'DISABLED CLIENT', $this->input->post('client_firstname').' '.$this->input->post('client_lastname'));
         $this->Logs->createDbLog($db_log_array);
@@ -79,18 +73,9 @@ class Client extends CI_Controller {
     }
   }
 
-// if it is anything else and 0000-00-00 that means he is a paid customer
-
-// is_in_trial for Trial customer
-
-// 1 = is in trial
-
-// 0 for not in trial combined with 6 or anything else logic i mention above
-
   public function enableClient() {
     if ($this->CI_auth->check_logged()) {
-      $query = "UPDATE clients SET active = 1 WHERE client_id = ?";
-      $res = $this->db->query($query, array($this->input->post('client_id')));
+      $res = $this->Clients->enableClient($this->input->post('client_id'));
       if ($res == 1) {
         $db_log_array = array($_SERVER['REMOTE_ADDR'], $this->session->userdata('email'), 'ENABLED CLIENT', $this->input->post('client_firstname').' '.$this->input->post('client_lastname'));
         $this->Logs->createDbLog($db_log_array);
@@ -160,8 +145,7 @@ class Client extends CI_Controller {
 
   public function extendTrial() {
     if ($this->CI_auth->check_logged()) {
-      $query = "UPDATE clients SET plan_end_date = DATE_ADD(plan_end_date, INTERVAL ? DAY) WHERE client_id = ?";
-      $res = $this->db->query($query, array($this->input->post('days'), $this->input->post('client_id')));
+      $res = $this->Clients->extendTrial($this->input->post('days'), $this->input->post('client_id'));
       if ($res == 1) {
         $data = array(
           "status" => true,

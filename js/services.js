@@ -85,19 +85,13 @@ angular.module('app.services', [])
 				return searchResults;	
 			}
 		}
-	}]).factory("deleteClients",["$http",function($http) {
-    return {
-      deleteClient:function() {
-
-      }
-    }
-  }]).factory("clientService",["$http",function($http) {
+	}]).factory("clientService",["$http",function($http) {
     return {
       getClients:function() {
         return $http.get("api/client/clients");
       },
       disableClient:function(data) {
-        var promise = $http.post('api/client/disableClient',data); //send data to user.php
+        var promise = $http.post('api/client/disableClient',data);
         promise.success(function(data) {
           if(data.status){
               toastr.success(data.message);
@@ -121,7 +115,31 @@ angular.module('app.services', [])
           return promise;
         },
       enableClient:function(data) {
-        var promise = $http.post('api/client/enableClient',data); //send data to user.php
+        var promise = $http.post('api/client/enableClient',data);
+        promise.success(function(data) {
+          if(data.status){
+              toastr.success(data.message);
+              toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "positionClass": "toast-top-full-width",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+              }
+            }
+          return data;       
+          });
+          return promise;
+        },
+      deleteClient:function(data) {
+        var promise = $http.post('api/client/deleteClient',data);
         promise.success(function(data) {
           if(data.status){
               toastr.success(data.message);
